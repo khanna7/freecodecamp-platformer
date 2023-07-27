@@ -7,6 +7,7 @@ import constants
 import player as player_module
 import utils
 import object
+import block
 
 import os
 import random
@@ -23,12 +24,7 @@ pygame.display.set_caption("Platformer")
 
 window = pygame.display.set_mode((constants.WIDTH, constants.HEIGHT))
 
-class Block(object.Object):
-    def __init__(self, x, y, size):
-        super().__init__(x, y, size, size)
-        block = utils.get_block(size)
-        self.image.blit(block, (0, 0))
-        self.mask = pygame.mask.from_surface(self.image)
+
 
 def get_background(name):
     image = pygame.image.load(join("assets", "Background", name))
@@ -74,7 +70,7 @@ def main(window):
     player = player_module.Player(100, 100, 50, 50)
     #blocks = [Block(0, HEIGHT - block_size, block_size)]
     
-    floor = [Block(i*block_size, constants.HEIGHT - block_size, block_size) 
+    floor = [block.Block(i*block_size, constants.HEIGHT - block_size, block_size) 
              for i in range(-constants.WIDTH // block_size, (constants.WIDTH*2) // block_size)]
     
     run = True
