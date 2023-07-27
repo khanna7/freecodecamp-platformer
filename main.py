@@ -1,9 +1,12 @@
 import pygame
+
+# We need to call pygame.init() before importing modules that use pygame features
 pygame.init()
 
 import constants
 import player as player_module
 import utils
+import object
 
 import os
 import random
@@ -20,19 +23,7 @@ pygame.display.set_caption("Platformer")
 
 window = pygame.display.set_mode((constants.WIDTH, constants.HEIGHT))
 
-class Object(pygame.sprite.Sprite):
-    def __init__(self, x, y, width, height, name=None):
-        super().__init__()
-        self.rect = pygame.Rect(x, y, width, height)
-        self.image = pygame.Surface((width, height), pygame.SRCALPHA)
-        self.width = width
-        self.height = height
-        self.name = name
-
-    def draw(self, win):
-        win.blit(self.image, (self.rect.x, self.rect.y))
-
-class Block(Object):
+class Block(object.Object):
     def __init__(self, x, y, size):
         super().__init__(x, y, size, size)
         block = utils.get_block(size)
