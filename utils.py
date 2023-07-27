@@ -2,6 +2,7 @@ import pygame
 from os import listdir
 from os.path import isfile, join
 import constants
+import player as player_module
 
 def flip(sprites):
     return [pygame.transform.flip(sprite, True, False) for sprite in sprites]
@@ -65,7 +66,22 @@ def draw(window, background, bg_image, player, objects):
     
     pygame.display.update()
 
-def handle_move(player):
+def handle_vertical_collision(player, objects, dy):
+    collided_objects = []
+    for obj in objects:
+        if pygame.sprite.collide_mask(player, obj):
+            if dy > 0:
+                player.rect.bottom = obj.rect.top
+                player.landed()
+            elif dy < 0:
+                player.rect.top = obj.rect.bottom
+                player.hit_head()
+    
+    collided_objects.append(obj)
+
+    return collided_objects
+
+def handle_move(player, objects):
     keys = pygame.key.get_pressed()
 
     player.x_vel = 0
@@ -74,4 +90,6 @@ def handle_move(player):
 
     if keys[pygame.K_RIGHT]:
         player.move_right(constants.PLAYER_VEL)
+
+    handle_vertical_collision(player, objects, player.y_vel, )
 

@@ -45,7 +45,7 @@ def main(window):
                 break
 
         player.loop(constants.FPS)
-        utils.handle_move(player)
+        utils.handle_move(player, objects=floor)
         utils.draw(window, background, bg_image, player, floor)
 
     pygame.quit()
