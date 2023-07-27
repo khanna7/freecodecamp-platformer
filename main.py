@@ -24,47 +24,9 @@ pygame.display.set_caption("Platformer")
 
 window = pygame.display.set_mode((constants.WIDTH, constants.HEIGHT))
 
-
-
-def get_background(name):
-    image = pygame.image.load(join("assets", "Background", name))
-    _, _, width, height = image.get_rect()
-    tiles = []
-
-    for i in range(constants.WIDTH // width + 1):
-        for j in range(constants.HEIGHT // height + 1):
-            pos = (i * width, j*height)
-            tiles.append(pos)
-
-    return tiles, image
-
-
-def draw(window, background, bg_image, player, objects):
-    for tile in background:
-        window.blit(bg_image, tile)
-        
-    for obj in objects:
-        obj.draw(window)
-
-    player.draw(window)
-    
-    pygame.display.update()
-
-def handle_move(player):
-    keys = pygame.key.get_pressed()
-
-    player.x_vel = 0
-    if keys[pygame.K_LEFT]:
-        player.move_left(constants.PLAYER_VEL)
-
-    if keys[pygame.K_RIGHT]:
-        player.move_right(constants.PLAYER_VEL)
-
-
-
 def main(window):
     clock = pygame.time.Clock()
-    background, bg_image = get_background("Blue.png")
+    background, bg_image = utils.get_background("Blue.png")
     block_size = 96
 
     player = player_module.Player(100, 100, 50, 50)
@@ -83,8 +45,8 @@ def main(window):
                 break
 
         player.loop(constants.FPS)
-        handle_move(player)
-        draw(window, background, bg_image, player, floor)
+        utils.handle_move(player)
+        utils.draw(window, background, bg_image, player, floor)
 
     pygame.quit()
     quit()

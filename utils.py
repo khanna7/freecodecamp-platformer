@@ -1,6 +1,7 @@
 import pygame
 from os import listdir
 from os.path import isfile, join
+import constants
 
 def flip(sprites):
     return [pygame.transform.flip(sprite, True, False) for sprite in sprites]
@@ -38,3 +39,39 @@ def get_block(size):
     rect = pygame.Rect(96, 0, size, size)
     surface.blit(image, (0, 0), rect)
     return pygame.transform.scale2x(surface)
+
+
+def get_background(name):
+    image = pygame.image.load(join("assets", "Background", name))
+    _, _, width, height = image.get_rect()
+    tiles = []
+
+    for i in range(constants.WIDTH // width + 1):
+        for j in range(constants.HEIGHT // height + 1):
+            pos = (i * width, j*height)
+            tiles.append(pos)
+
+    return tiles, image
+
+
+def draw(window, background, bg_image, player, objects):
+    for tile in background:
+        window.blit(bg_image, tile)
+        
+    for obj in objects:
+        obj.draw(window)
+
+    player.draw(window)
+    
+    pygame.display.update()
+
+def handle_move(player):
+    keys = pygame.key.get_pressed()
+
+    player.x_vel = 0
+    if keys[pygame.K_LEFT]:
+        player.move_left(constants.PLAYER_VEL)
+
+    if keys[pygame.K_RIGHT]:
+        player.move_right(constants.PLAYER_VEL)
+
